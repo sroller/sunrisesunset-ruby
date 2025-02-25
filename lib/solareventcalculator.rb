@@ -193,16 +193,8 @@ class SolarEventCalculator
 
   def put_in_timezone(utcTime, timezone)
     tz = TZInfo::Timezone.get(timezone)
-    # puts "UTCTime #{utcTime}"
-    local = utcTime + get_utc_offset(timezone)
-    # puts "LocalTime #{local}"
-
-    offset = (get_utc_offset(timezone) / 60 / 60).to_i
-    offset = (offset > 0) ? "+" + offset.to_s : offset.to_s
-
-    timeInZone = DateTime.parse("#{@date.strftime}T#{local.strftime('%H:%M:%S')}#{offset}")
-    # puts "CALC:timeInZone #{timeInZone}"
-    timeInZone
+    local_time = tz.utc_to_local(utcTime)
+    local_time.to_datetime
   end
 
   def get_utc_offset(timezone)
